@@ -7,12 +7,12 @@ app.use(express.static('public'));
 app.use(express.static(path.join(__dirname,'views')));
 var HTTP_PORT = process.env.PORT || 8080;
 
-
+//home route
 app.get("/", (req,res)=>{
     res.redirect("/about");
 })
 
-
+//about route
 app.get("/about", (req,res)=>{
     res.sendFile(__dirname + '/views/about.html');
 })
