@@ -59,11 +59,10 @@ app.get("/categories", (req, res) => {
 
 
 
-// ERROR 404
+
 
 
 initialize().then(() => {
-    // Start the server after the files are read and the initialization is done
     app.listen(HTTP_PORT, () => {
       console.log("Express http server listening on: " + HTTP_PORT);
     });
