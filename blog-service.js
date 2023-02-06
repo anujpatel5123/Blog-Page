@@ -37,17 +37,6 @@ function initialize() {
 }
 
 
-function getAllPosts() {
-    return new Promise((resolve, reject) => {
-        if (posts.length === 0) {
-            reject("No results returned");
-        } else {
-            resolve(posts);
-        }
-    })
-}
-
-
 function getPublishedPosts() {
     return new Promise((resolve, reject) => {
         let publishedPosts = [];
@@ -65,6 +54,15 @@ function getPublishedPosts() {
     })    
 }
 
+function getAllPosts() {
+    return new Promise((resolve, reject) => {
+        if (posts.length === 0) {
+            reject("No results returned");
+        } else {
+            resolve(posts);
+        }
+    })
+}
  
 function getCategories() {
     return new Promise((resolve, reject) => {
