@@ -124,4 +124,4 @@ function addPost(postData) {
     });
   }
 
-module.exports = { initialize, getAllPosts, getPublishedPosts, getCategories, addpost, getPostsByCategory, getPostById, getPostsByMinDate };
+module.exports = { initialize, getAllPosts, getPublishedPosts, getCategories, addPost, getPostsByCategory, getPostById, getPostsByMinDate };
