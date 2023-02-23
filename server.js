@@ -18,7 +18,7 @@ const app = express();
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2
 const streamifier = require('streamifier')
-const {initialize, getAllPosts, getPublishedPosts, getCategories, addpost, getPostsByCategory, getPostById, getPostsByMinDate } = require("./blog-service")
+const {initialize, getAllPosts, getPublishedPosts, getCategories, addPost, getPostsByCategory, getPostById, getPostsByMinDate} = require("./blog-service")
 
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname,'views')));
@@ -104,7 +104,6 @@ app.post("/posts/add", upload.single("featureImage"), (req, res) => {
 
   function processPost(imageUrl) {
     req.body.featureImage = imageUrl;
-    // TODO: Process the req.body and add it as a new Blog Post before redirecting to /posts
     blogData.addPostPath(req.body).then(() => {
       res.redirect("/posts");
     });
