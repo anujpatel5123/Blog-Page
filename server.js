@@ -31,7 +31,7 @@ cloudinary.config({
   secure: true
 });
 
-
+const upload=multer();
 //home route
 app.get("/", (req,res)=>{
     res.redirect("/about");
