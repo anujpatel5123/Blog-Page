@@ -74,4 +74,54 @@ function getCategories() {
     })
 }
 
-module.exports = { initialize, getAllPosts, getPublishedPosts, getCategories };
+function addPost(postData) {
+    return new Promise((resolve, reject) => {
+      if (postData.published === undefined) {
+        postData.published = false;
+      } else {
+        postData.published = true;
+      }
+  
+      postData.id = posts.length + 1;
+      posts.push(postData);
+      resolve(postData);
+    });
+  }
+  
+  function getPostsByCategory(category) {
+    return new Promise((resolve, reject) => {
+      const matchingPosts = posts.filter((post) => post.category == category);
+      if (matchingPosts.length > 0) {
+        resolve(matchingPosts);
+      } else {
+        reject("No results returned");
+      }
+    });
+  }
+  
+  function getPostsByMinDate(minDate) {
+    return new Promise((resolve, reject) => {
+      const matchingPosts = posts.filter(
+        (post) => new Date(post.postDate) >= new Date(minDate)
+      );
+      if (matchingPosts.length > 0) {
+        resolve(matchingPosts);
+      } else {
+        reject("No results returned");
+      }
+    });
+  }
+  
+  function getPostById(id) {
+    return new Promise((resolve, reject) => {
+      const matchingPosts = posts.filter((post) => post.id == id);
+      const selectPost = matchingPosts[0];
+      if (selectPost) {
+        resolve(selectPost);
+      } else {
+        reject("No results returned");
+      }
+    });
+  }
+
+module.exports = { initialize, getAllPosts, getPublishedPosts, getCategories, addpost, getPostsByCategory, getPostById, getPostsByMinDate };

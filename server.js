@@ -15,11 +15,22 @@
 const express = require("express");
 const path = require('path');
 const app = express();
-const {initialize, getAllPosts, getPublishedPosts, getCategories} = require("./blog-service")
+const multer = require("multer");
+const cloudinary = require('cloudinary').v2
+const streamifier = require('streamifier')
+const {initialize, getAllPosts, getPublishedPosts, getCategories, addpost, getPostsByCategory, getPostById, getPostsByMinDate } = require("./blog-service")
 
 app.use(express.static('public'));
 app.use(express.static(path.join(__dirname,'views')));
 var HTTP_PORT = process.env.PORT || 8080;
+
+cloudinary.config({
+  cloud_name: 'Cloud Name',
+  api_key: 'API Key',
+  api_secret: 'API Secret',
+  secure: true
+});
+
 
 //home route
 app.get("/", (req,res)=>{
@@ -57,6 +68,49 @@ app.get("/posts", (req, res) => {
         res.send(err);
       })
   });
+
+//addpost route
+
+app.get("/posts/add", (req, res) => {
+  const addPostPath = path.join(__dirname, "views", "addPost.html");
+  res.sendFile(addPostPath);
+});
+
+app.post("/posts/add", upload.single("featureImage"), (req, res) => {
+  if (req.file) {
+    let streamUpload = (req) => {
+      return new Promise((resolve, reject) => {
+        let stream = cloudinary.uploader.upload_stream((error, result) => {
+          if (result) {
+            resolve(result);
+          } else {
+            reject(error);
+          }
+        });
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+    };
+    async function upload(req) {
+      let result = await streamUpload(req);
+      console.log(result);
+      return result;
+    }
+    upload(req).then((uploaded) => {
+      processPost(uploaded.url);
+    });
+  } else {
+    processPost("");
+  }
+
+  function processPost(imageUrl) {
+    req.body.featureImage = imageUrl;
+    // TODO: Process the req.body and add it as a new Blog Post before redirecting to /posts
+    blogData.addPostPath(req.body).then(() => {
+      res.redirect("/posts");
+    });
+  }
+  res.redirect("/posts");
+});
 
 
 //Categories Route
