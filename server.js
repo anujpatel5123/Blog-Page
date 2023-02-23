@@ -25,9 +25,9 @@ app.use(express.static(path.join(__dirname,'views')));
 var HTTP_PORT = process.env.PORT || 8080;
 
 cloudinary.config({
-  cloud_name: 'Cloud Name',
-  api_key: 'API Key',
-  api_secret: 'API Secret',
+  cloud_name: 'dr5smc876',
+  api_key: '831713948775941',
+  api_secret: 'T6b12SmdbJtEGlIU8mUj-rovh-A',
   secure: true
 });
 
