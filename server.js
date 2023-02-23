@@ -3,11 +3,11 @@
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
-**  Name: ANUJ PATEL Student ID: 165811217 Date: 05-FEB-2023
+**  Name: ANUJ PATEL Student ID: 165811217 Date: 22-FEB-2023
 
 *  Cyclic Web App URL: https://doubtful-hen-jodhpurs.cyclic.app
 *
-*  GitHub Repository URL: https://github.com/anujpatel5123/web322-app.git
+*  GitHub Repository URL: https://github.com/anujpatel5123/web322-app
 *
 ********************************************************************************/ 
 
