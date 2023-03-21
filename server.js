@@ -34,9 +34,9 @@ var HTTP_PORT = process.env.PORT || 8080;
 app.engine('.hbs', exphbs.engine({ extname: '.hbs' }));
 app.set('view engine', '.hbs');
 cloudinary.config({
-    cloud_name: 'da1grmqxq',
-    api_key: '699698182773399',
-    api_secret: 'Y76Q1PkGSWg7R6LeHQ3Jkh5hax4',
+    cloud_name: 'dr5smc876',
+    api_key: '831713948775941',
+    api_secret: 'T6b12SmdbJtEGlIU8mUj-rovh-A',
     secure: true
 });
 const upload = multer();
@@ -45,41 +45,43 @@ function onHttpStart() {
   console.log("Express http server listening on: " + HTTP_PORT);
 }
 
+//Home route
 app.get("/", function (req, res) {
   res.redirect("/blog");
 });
 
+//About route
 app.get("/about", function (req, res) {
   res.render("about");
 });
 
 
-
+//Blog route
 app.get('/blog', async (req, res) => {
   
-  // Declare an object to store properties for the view
+ 
   let viewData = {};
   
   try{
-    // declare empty array to hold "post" objects
+    
         let posts = [];
         
-        // if there's a "category" query, filter the returned posts by category
+        
         if(req.query.category){
-            // Obtain the published "posts" by category
+          
             posts = await blogData.getPublishedPostsByCategory(req.query.category);
           }else{
-            // Obtain the published "posts"
+           
             posts = await blogData.getPublishedPosts();
           }
           
-          // sort the published posts by postDate
+         
           posts.sort((a,b) => new Date(b.postDate) - new Date(a.postDate));
           
-          // get the latest post from the front of the list (element 0)
+        
           let post = posts[0]; 
           
-          // store the "posts" and "post" data in the viewData object (to be passed to the view)
+        
           viewData.posts = posts;
           viewData.post = post;
           
@@ -88,20 +90,21 @@ app.get('/blog', async (req, res) => {
     }
     
     try{
-      // Obtain the full list of "categories"
+      
       let categories = await blogData.getCategories();
       
-      // store the "categories" data in the viewData object (to be passed to the view)
+    
       viewData.categories = categories;
     }catch(err){
       viewData.categoriesMessage = "no results"
     }
     
-    // render the "blog" view with all of the data (viewData)
+   
     res.render("blog", {data: viewData})
     
   });
   
+  //Posts route
   app.get("/posts", function (req, res) {
     if (req.query.category) {
       getPostsByCategory(req.query.category)
@@ -137,27 +140,20 @@ app.get('/blog', async (req, res) => {
   
   app.get('/blog/:id', async (req, res) => {
     
-    // Declare an object to store properties for the view
     let viewData = {};
     
     try{
       
-      // declare empty array to hold "post" objects
       let posts = [];
       
-      // if there's a "category" query, filter the returned posts by category
       if(req.query.category){
-        // Obtain the published "posts" by category
         posts = await blogData.getPublishedPostsByCategory(req.query.category);
       }else{
-        // Obtain the published "posts"
         posts = await blogData.getPublishedPosts();
       }
       
-      // sort the published posts by postDate
         posts.sort((a,b) => new Date(b.postDate) - new Date(a.postDate));
   
-        // store the "posts" and "post" data in the viewData object (to be passed to the view)
         viewData.posts = posts;
         
       }catch(err){
@@ -165,23 +161,19 @@ app.get('/blog', async (req, res) => {
     }
     
     try{
-      // Obtain the post by "id"
       viewData.post = await blogData.getPostById(req.params.id);
     }catch(err){
       viewData.message = "no results"; 
     }
     
     try{
-        // Obtain the full list of "categories"
         let categories = await blogData.getCategories();
         
-        // store the "categories" data in the viewData object (to be passed to the view)
         viewData.categories = categories;
       }catch(err){
         viewData.categoriesMessage = "no results"
       }
       
-      // render the "blog" view with all of the data (viewData)
       res.render("blog", {data: viewData})
     });
   app.get("/post/:value", (req, res) => {
@@ -194,6 +186,7 @@ app.get('/blog', async (req, res) => {
       })    
   })
 
+  //Categories Route
 app.get("/categories", function (req, res) {
   getCategories()
     .then((data) => {
@@ -204,6 +197,7 @@ app.get("/categories", function (req, res) {
     });
 });
 
+//AddPost route
 app.get("/posts/add", (req, res) => {
   res.render("addPost");
 });
