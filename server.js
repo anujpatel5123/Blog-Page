@@ -6,7 +6,7 @@
 **  Name: ANUJ PATEL Student ID: 165811217 Date: 20-MAR-2023
 *  Cyclic Web App URL: https://doubtful-hen-jodhpurs.cyclic.app
 *
-*  GitHub Repository URL: https://github.com/anujpatel5123/web322-app
+*  GitHub Repository URL:  https://doubtful-hen-jodhpurs.cyclic.app
 *
 ********************************************************************************/ 
 
