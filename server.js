@@ -87,7 +87,6 @@ cloudinary.config({
 
 const upload = multer();
 
-// call this function after the http server starts listening for requests
 function onHttpStart() {
   console.log("Express http server listening on: " + HTTP_PORT);
 }
