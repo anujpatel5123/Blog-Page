@@ -1,12 +1,12 @@
 /*********************************************************************************
-*  WEB322 – Assignment 04
+*  WEB322 – Assignment 05
 *  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part *  of this assignment has been copied manually or electronically from any other source 
 *  (including 3rd party web sites) or distributed to other students.
 * 
 **  Name: ANUJ PATEL Student ID: 165811217 Date: 20-MAR-2023
 *  Cyclic Web App URL: https://doubtful-hen-jodhpurs.cyclic.app
 *
-*  GitHub Repository URL:  https://doubtful-hen-jodhpurs.cyclic.app
+*  GitHub Repository URL: https://github.com/anujpatel5123/web322-app
 *
 ********************************************************************************/ 
 
@@ -19,24 +19,11 @@ const streamifier = require("streamifier");
 const exphbs = require("express-handlebars");
 const stripJs = require("strip-js");
 const blogData = require("./blog-service");
-const {
-  initialize,
-  getAllPosts,
-  getPublishedPosts,
-  getCategories,
-  addPost,
-  getPostsByCategory,
-  getPostsByMinDate,
-  getPostById,
-  getPublishedPostsByCategory,
-  addCategory,
-  deleteCategoryById,
-  deletePostById,
-} = require("./blog-service.js");
+const {initialize,getAllPosts,getPublishedPosts,getCategories,addPost,getPostsByCategory,getPostsByMinDate,getPostById,getPublishedPostsByCategory,addCategory,deleteCategoryById,deletePostById,} = require("./blog-service.js");
 
 app.use(express.static("public"));
 
-//This will add the property "activeRoute" to "app.locals" whenever the route changes
+
 app.use(function (req, res, next) {
   let route = req.path.substring(1);
   app.locals.activeRoute =
@@ -105,110 +92,76 @@ function onHttpStart() {
   console.log("Express http server listening on: " + HTTP_PORT);
 }
 
-// ========== Home Page Route ==========
+// Home Route
 app.get("/", (req, res) => {
   res.redirect("/blog");
 });
 
-// ========== About Page Route ==========
+// About Route 
 app.get("/about", (req, res) => {
   res.render("about");
 });
 
-// ========== Blog Page Route ==========
+//Blog Route
 app.get("/blog", async (req, res) => {
-  // Declare an object to store properties for the view
+  
   let viewData = {};
 
   try {
-    // declare empty array to hold "post" objects
     let posts = [];
 
-    // if there's a "category" query, filter the returned posts by category
     if (req.query.category) {
-      // Obtain the published "posts" by category
       posts = await blogData.getPublishedPostsByCategory(req.query.category);
     } else {
-      // Obtain the published "posts"
       posts = await blogData.getPublishedPosts();
     }
-
-    // sort the published posts by postDate
     posts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
-
-    // get the latest post from the front of the list (element 0)
     let post = posts[0];
-
-    // store the "posts" and "post" data in the viewData object (to be passed to the view)
     viewData.posts = posts;
     viewData.post = post;
   } catch (err) {
     viewData.message = "no results";
   }
-
-  try {
-    // Obtain the full list of "categories"
+   try {
     let categories = await blogData.getCategories();
-
-    // store the "categories" data in the viewData object (to be passed to the view)
     viewData.categories = categories;
   } catch (err) {
     viewData.categoriesMessage = "no results";
   }
-
-  // render the "blog" view with all of the data (viewData)
   res.render("blog", { data: viewData });
 });
-
-// Display the latest blog post available by blog post id
 app.get("/blog/:id", async (req, res) => {
-  // Declare an object to store properties for the view
   let viewData = {};
 
   try {
-    // declare empty array to hold "post" objects
     let posts = [];
-
-    // if there's a "category" query, filter the returned posts by category
     if (req.query.category) {
-      // Obtain the published "posts" by category
       posts = await blogData.getPublishedPostsByCategory(req.query.category);
     } else {
-      // Obtain the published "posts"
       posts = await blogData.getPublishedPosts();
     }
-
-    // sort the published posts by postDate
     posts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
-
-    // store the "posts" and "post" data in the viewData object (to be passed to the view)
     viewData.posts = posts;
   } catch (err) {
     viewData.message = "no results";
   }
 
   try {
-    // Obtain the post by "id"
     viewData.post = await blogData.getPostById(req.params.id);
   } catch (err) {
     viewData.message = "no results";
   }
 
   try {
-    // Obtain the full list of "categories"
     let categories = await blogData.getCategories();
-
-    // store the "categories" data in the viewData object (to be passed to the view)
     viewData.categories = categories;
   } catch (err) {
     viewData.categoriesMessage = "no results";
   }
-
-  // render the "blog" view with all of the data (viewData)
   res.render("blog", { data: viewData });
 });
 
-// ========== Posts Page Route ==========
+//Posts Route
 app.get("/posts", (req, res) => {
   if (req.query.category) {
     getPostsByCategory(req.query.category)
@@ -243,7 +196,7 @@ app.get("/posts", (req, res) => {
   }
 });
 
-// ========== Post by Id route ==========
+//Post by Id route
 app.get("/post/:value", (req, res) => {
   getPostById(req.params.value)
     .then((data) => {
@@ -254,7 +207,7 @@ app.get("/post/:value", (req, res) => {
     });
 });
 
-// ========== Categories Page Route ==========
+//Categories Route
 app.get("/categories", (req, res) => {
   getCategories()
     .then((data) => {
@@ -267,12 +220,12 @@ app.get("/categories", (req, res) => {
     });
 });
 
-// ========== Add Categories Route ==========
+// Add Categories Route
 app.get("/categories/add", (req, res) => {
   res.render("addCategory");
 });
 
-// ========== Add Categories Post Route ==========
+//Add Categories Post Route
 app.post("/categories/add", (req, res) => {
   let catObject = {};
   catObject.category = req.body.category;
@@ -288,7 +241,7 @@ app.post("/categories/add", (req, res) => {
   }
 });
 
-// ========== Delete Category By ID Route ==========
+// Delete Category By ID Route
 app.get("/categories/delete/:id", (req, res) => {
   deleteCategoryById(req.params.id)
     .then(() => {
@@ -299,7 +252,7 @@ app.get("/categories/delete/:id", (req, res) => {
     });
 });
 
-// ========== Delete Post By ID Route ==========
+// Delete Post By ID Route
 app.get("/posts/delete/:id", (req, res) => {
   deletePostById(req.params.id)
     .then(() => {
@@ -321,7 +274,7 @@ app.get("/posts/add", (req, res) => {
     });
 });
 
-// ========== Add Posts (Post) Route ==========
+// Add Posts Route
 app.post("/posts/add", upload.single("featureImage"), (req, res) => {
   let streamUpload = (req) => {
     return new Promise((resolve, reject) => {
@@ -365,12 +318,12 @@ app.post("/posts/add", upload.single("featureImage"), (req, res) => {
     });
 });
 
-// ========== 404 Page Route ==========
+// 404 Page Route
 app.use((req, res) => {
   res.status(404).render("404");
 });
 
-// ========== Check the initialization and start listening ==========
+// Listening on Server
 initialize()
   .then(() => {
     app.listen(HTTP_PORT, onHttpStart);
