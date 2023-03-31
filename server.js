@@ -79,9 +79,9 @@ app.set("view engine", ".hbs");
 var HTTP_PORT = process.env.PORT || 8080;
 
 cloudinary.config({
-  cloud_name: "dltvx2iag",
-  api_key: "175944967494452",
-  api_secret: "hZwrEsLpS62xuEJDYyV96b7oZZs",
+  cloud_name: "dr5smc876",
+  api_key: "831713948775941",
+  api_secret: "T6b12SmdbJtEGlIU8mUj-rovh-A",
   secure: true,
 });
 
